@@ -1,34 +1,114 @@
 var i = 1 ;
-// var color = '';
-// $('td').click(function() {
-//     var x = $(this).css('backgroundColor');
-//     hexc(x);
-//     alert(color);
-// })
-//
-// function hexc(colorval) {
-//     var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-//     delete(parts[0]);
-//     for (var i = 1; i <= 3; ++i) {
-//         parts[i] = parseInt(parts[i]).toString(16);
-//         if (parts[i].length == 1) parts[i] = '0' + parts[i];
-//     }
-//     color = '#' + parts.join('');
-// }
-//var player1 = prompt('Enter the name of Player1 and you represent blue');
+var color;
+var col;
+var row;
+
+//dont display the table at begginning
+$(document).ready(function() {
+  $('table').css('display','none');
+});
+
+//display the table after start has been clicked
+$(document).ready(function(){
+  $('#Start').click(function(){
+    $('table').css('display','block');
+  });
+});
+
+//Restart the game
+$(document).ready(function(){
+  $('#Restart').click(function(){
+    $('.dot').css('background-color','#bbb');
+    $('#announce_winner').html('');
+  });
+});
+
+function colorMatch(one,two,three,four){
+  return (one===two && one===three && one===four && one !== 'rgb(187, 187, 187)' && one !== undefined);
+}
+
+function returncolor(rowindex,colindex)
+{
+  return table.eq(rowindex).find('td').eq(colindex).css('background-color');
+}
+
+function Verticalcheck() {
+  for(var rowindex = 0;rowindex<7;rowindex++)
+  {
+    for(var colindex = 0;colindex<7;colindex++)
+    {
+      if(colorMatch(returncolor(rowindex,colindex),returncolor(rowindex,colindex+1),returncolor(rowindex,colindex+2),returncolor(rowindex,colindex+3)))
+      {
+        return true;
+      }
+        
+      else{
+        continue;
+      }
+    }
+  }
+}
+
+function HorizontalCheck()
+{
+for(var rowindex = 0;rowindex<7;rowindex++)
+  {
+    for(var colindex = 0;colindex<7;colindex++)
+    {
+      if(colorMatch(returncolor(rowindex,colindex),returncolor(rowindex+1,colindex),returncolor(rowindex+2,colindex),returncolor(rowindex+3,colindex))){
+        return true;
+      }
+      else{
+        continue;
+      }
+    }
+  }
+}
+
+function diagonalCheck()
+{
+  for(var rowindex = 0;rowindex<7;rowindex++)
+  {
+    for(var colindex = 0;colindex<7;colindex++)
+    {
+      if(colorMatch(returncolor(rowindex,colindex),returncolor(rowindex+1,colindex+1),returncolor(rowindex+2,colindex+2),returncolor(rowindex+3,colindex+3)))
+      {
+        gameend();
+        return true;
+      }
+      else if(colorMatch(returncolor(rowindex,colindex),returncolor(rowindex-1,colindex+1),returncolor(rowindex-2,colindex+2),returncolor(rowindex-3,colindex+3)))
+        {
+          return true;
+        }
+      else
+      {
+        continue;
+      }
+    }
+  }
+}
+
+
+function gameend()
+{
+  document.getElementById('announce_winner').innerHTML = color + '  Wins!';
+}
+
 var player1color = 'rgb(0, 82, 165)';
-//var player2 = prompt('Enter the name of Player2 and you represent red');
+
 var player2color = 'rgb(255, 66, 66)';
 var game_start = true;
 var table = $('table tr');
   $(document).ready(function(){
     $('.dot').click(function(){
-      if(i<5000)
-      {
+        col = $(this).closest('td').index();
+        row = $(this).closest('tr').index();
+        console.log(row + ',' + col); 
         if(i%2==0)
         {
           if($(this).css('background-color') == 'rgb(187, 187, 187)')
           {
+            color = "Blue";
             $(this).css('background-color','blue')
             i++;
           }
@@ -36,9 +116,11 @@ var table = $('table tr');
             alert('choose another circle!');
           }
         }
-        else {
+        else 
+        {
           if($(this).css('background-color') == 'rgb(187, 187, 187)')
           {
+            color = "Red";
             $(this).css('background-color','red')
             i++;
           }
@@ -46,6 +128,8 @@ var table = $('table tr');
             alert('choose another circle!');
           }
         }
-      }
+        if (HorizontalCheck() || Verticalcheck() || diagonalCheck()) {
+    gameend();
+  }
     });
   });
