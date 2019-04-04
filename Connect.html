@@ -11,26 +11,21 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    
+
 
   </head>
   <body>
     <div class="container">
     <div class="jumbotron">
       <h1 class="display-3">Connect four</h1>
-      <p class="lead">connect Four colours of same next to each other to win</p>
+      <p class="lead">connect Four colours of same next to each other to win Vertically or Horizontally or Diagonally</p>
+      <p id='announce_winner' class="lead"></p>
+    
+    	<input type="button" id="Restart" value="Restart" class="btn btn-primary">&nbsp;<input type="button" id="Start" value="Start" class="btn btn-primary">
     </div>
+    
 
       <table style='width:100%;table-layout:fixed;'>
-        <tr>
-          <td class="dot"></td>
-          <td class="dot"></td>
-          <td class="dot"></td>
-          <td class="dot"></td>
-          <td class="dot"></td>
-          <td class="dot"></td>
-          <td class="dot"></td>
-        </tr>
         <tr>
           <td class="dot"></td>
           <td class="dot"></td>
